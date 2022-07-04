@@ -1,13 +1,17 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
-""""
-custom user model 사용 시 UserManager 클래스와
-create_user, create_superuser 함수가 정의되어 있어야 함
-"""
+"""Create your models here."""
 
 
 class CustomUserManager(BaseUserManager):
+    """
+    Assignee : 희석
+
+    custom user model 사용 시 UserManager 클래스와
+    create_user, create_superuser 함수가 정의되어 있어야 함
+    """
+
     def create_user(self, email, password):
         if not email:
             raise ValueError("Users must have an email")
@@ -18,9 +22,8 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    """python manage.py createsuperuser 사용 시 해당 함수가 사용됨"""
-
     def create_superuser(self, email, password):
+        """python manage.py createsuperuser 사용 시 해당 함수가 사용됨"""
         user = self.create_user(
             email=email,
             password=password,
@@ -61,24 +64,21 @@ class User(AbstractBaseUser):
     def __str__(self):
         return f"email: {self.email} / name: {self.name}"
 
-    """
-    # 로그인 사용자의 특정 테이블의 crud 권한을 설정, perm table의 crud 권한이 들어간다.
-    # admin일 경우 항상 True, 비활성 사용자(is_active=False)의 경우 항상 False
-    """
-
     def has_perm(self, perm, obj=None):
+        """
+        # 로그인 사용자의 특정 테이블의 crud 권한을 설정, perm table의 crud 권한이 들어간다.
+        # admin일 경우 항상 True, 비활성 사용자(is_active=False)의 경우 항상 False
+        """
         return True
-
-    """"
-    # 로그인 사용자의 특정 app에 접근 가능 여부를 설정, app_label에는 app 이름이 들어간다.
-    # admin일 경우 항상 True, 비활성 사용자(is_active=False)의 경우 항상 False
-    """
 
     def has_module_perms(self, app_label):
+        """ "
+        # 로그인 사용자의 특정 app에 접근 가능 여부를 설정, app_label에는 app 이름이 들어간다.
+        # admin일 경우 항상 True, 비활성 사용자(is_active=False)의 경우 항상 False
+        """
         return True
-
-    """admin 권한 설정"""
 
     @property
     def is_staff(self):
+        """admin 권한 설정"""
         return self.is_admin
