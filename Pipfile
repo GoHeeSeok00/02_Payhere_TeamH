@@ -12,6 +12,7 @@ pre-commit = "*"
 black = "*"
 flake8 = "*"
 isort = "*"
+tzdata = "*"
 
 [dev-packages]
 

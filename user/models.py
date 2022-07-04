@@ -37,7 +37,7 @@ class User(AbstractBaseUser):
     id = models.BigAutoField(primary_key=True)
     email = models.EmailField("이메일 주소", max_length=100, unique=True)
     password = models.CharField("비밀번호", max_length=128)
-    name = models.CharField("이름", max_length=20)
+    username = models.CharField("이름", max_length=20)
     mobile = models.CharField("휴대폰 번호", max_length=20)
 
     """is_active가 False일 경우 계정이 비활성화됨"""
@@ -62,7 +62,7 @@ class User(AbstractBaseUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f"email: {self.email} / name: {self.name}"
+        return f"email: {self.email} / name: {self.username}"
 
     def has_perm(self, perm, obj=None):
         """
