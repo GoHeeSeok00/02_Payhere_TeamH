@@ -60,7 +60,7 @@ class AccountBooksDetailAPIView(APIView):
         permission_classes에 명시된 퍼미션에 따라 권한 체크
         """
         try:
-            object = AccountBook.objects.get(id=obj_id, is_delete=False)
+            object = AccountBook.objects.get(id=obj_id, is_deleted=False)
         except AccountBook.DoesNotExist:
             return
 
