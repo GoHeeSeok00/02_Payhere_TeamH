@@ -20,7 +20,7 @@ class AccountBook(BaseTimeStampModel):
     is_deleted = models.BooleanField("삭제 여부", default=False)
 
     def __str__(self):
-        return f"{self.title}의 가계부"
+        return f"id : {self.id} / {self.title}의 가계부"
 
 
 class AccountBookRecord(BaseTimeStampModel):
@@ -40,4 +40,4 @@ class AccountBookRecord(BaseTimeStampModel):
     is_deleted = models.BooleanField("삭제 여부", default=False)
 
     def __str__(self):
-        return f"{self.amount} : {self.memo}"
+        return f"id : {self.id} / {self.amount} : {self.memo}"

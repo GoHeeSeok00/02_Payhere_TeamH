@@ -61,7 +61,7 @@ class AccountBooksDetailAPIView(APIView):
         DoesNotExist 에러 발생 시 None을 리턴합니다.
         """
         try:
-            object = AccountBook.objects.get(id=obj_id, is_deleted=False)
+            object = AccountBook.objects.get(id=obj_id)
         except AccountBook.DoesNotExist:
             return
 
@@ -81,3 +81,30 @@ class AccountBooksDetailAPIView(APIView):
             return Response({"error": "가계부가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
 
         return Response(AccountBooksModelSerializer(account_book).data, status=status.HTTP_200_OK)
+
+    def put(self, request, obj_id):
+        """
+        Assignee : 희석
+
+        obj_id : int
+
+        가계부 단일 객체 수정을 위한 메서드입니다.
+        객체 삭제의 경우 is_deleted 필드의 값을 False에서 True로 변경하는 로직으로 구성됩니다.
+        """
+        account_book = self.get_object_and_check_permission(obj_id)
+        if not account_book:
+            return Response({"error": "가계부가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = AccountBooksModelSerializer(account_book, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        try:
+            if request.data["is_deleted"] == True:
+                return Response({"message": "가계부 삭제 성공!!"}, status=status.HTTP_200_OK)
+            elif request.data["is_deleted"] == False:
+                return Response({"message": "가계부 복구 성공!!"}, status=status.HTTP_200_OK)
+        except KeyError:
+            pass
+
+        return Response({"message": "가계부 수정 성공!!"}, status=status.HTTP_200_OK)
