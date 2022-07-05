@@ -68,4 +68,8 @@ class AccountBooksDetailAPIView(APIView):
         return object
 
     def get(self, request, obj_id):
-        return
+        account_book = self.get_object_and_check_permission(obj_id)
+        if not account_book:
+            return Response({"error": "가계부가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(AccountBooksModelSerializer(account_book).data, status=status.HTTP_200_OK)
