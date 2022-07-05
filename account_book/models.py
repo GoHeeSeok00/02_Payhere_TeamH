@@ -17,7 +17,7 @@ class AccountBook(BaseTimeStampModel):
     user = models.ForeignKey(to=UserModel, verbose_name="사용자", on_delete=models.CASCADE, related_name="account_book")
     title = models.CharField("가계부 제목", max_length=20)
     balance = models.IntegerField("가계부 시작 금액", default=0)
-    is_delete = models.BooleanField("삭제 여부", default=False)
+    is_deleted = models.BooleanField("삭제 여부", default=False)
 
     def __str__(self):
         return f"{self.title}의 가계부"
@@ -37,7 +37,7 @@ class AccountBookRecord(BaseTimeStampModel):
     )
     amount = models.IntegerField("금액")
     memo = models.CharField("메모", max_length=100)
-    is_delete = models.BooleanField("삭제 여부", default=False)
+    is_deleted = models.BooleanField("삭제 여부", default=False)
 
     def __str__(self):
         return f"{self.amount} : {self.memo}"

@@ -24,7 +24,7 @@ class AccountBooksAPIView(APIView):
 
     def get(self, request):
         # 쿼리 파라미터가 들어왔을 때, 삭제된 내역만 볼 수 있게끔 구현해야 함
-        accountbooks = AccountBook.objects.all().filter(user=request.user, is_delete=False)
+        accountbooks = AccountBook.objects.all().filter(user=request.user, is_deleted=False)
         serializer = AccountBooksModelSerializer(accountbooks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
