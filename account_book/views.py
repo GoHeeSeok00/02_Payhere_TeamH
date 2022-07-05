@@ -54,10 +54,10 @@ class AccountBooksDetailAPIView(APIView):
         """
         Assignee : 희석
 
-        object를 가져올 때 object 유무에 따른 예외처리
-        DoesNotExist 에러 발생 시 None 리턴
+        obj_id : int
 
-        permission_classes에 명시된 퍼미션에 따라 권한 체크
+        input 인자로 단일 오브젝트를 가져오고, 퍼미션 검사를 하는 메서드입니다.
+        DoesNotExist 에러 발생 시 None을 리턴합니다.
         """
         try:
             object = AccountBook.objects.get(id=obj_id, is_deleted=False)
@@ -68,6 +68,13 @@ class AccountBooksDetailAPIView(APIView):
         return object
 
     def get(self, request, obj_id):
+        """
+        Assignee : 희석
+
+        obj_id : int
+
+        가계부 단일 조회를 하기 위한 메서드입니다.
+        """
         account_book = self.get_object_and_check_permission(obj_id)
         if not account_book:
             return Response({"error": "가계부가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
