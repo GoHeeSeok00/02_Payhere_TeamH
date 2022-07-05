@@ -13,6 +13,7 @@ black = "*"
 flake8 = "*"
 isort = "*"
 tzdata = "*"
+pytest-django = "*"
 
 [dev-packages]
 
