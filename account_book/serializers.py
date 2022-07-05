@@ -44,7 +44,7 @@ class AccountBooksModelSerializer(ModelSerializer):
     accountbook_record = serializers.SerializerMethodField(required=False, read_only=True)
 
     def get_total_balance(self, obj):
-        accountbookrecords = obj.account_book_record.all()
+        accountbookrecords = obj.account_book_record.all().filter(is_deleted=False)
         total_balance = obj.balance
         for record in accountbookrecords:
             total_balance += record.amount
