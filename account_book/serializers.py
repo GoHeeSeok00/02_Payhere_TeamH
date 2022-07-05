@@ -16,7 +16,7 @@ class AccountBooksRecordModelSerializer(ModelSerializer):
 
     def get_balance(self, obj):
         balance = obj.account_book.balance
-        for record in obj.account_book.account_book_record.all().filter(is_delete=False):
+        for record in obj.account_book.account_book_record.all().filter(is_deleted=False):
             if obj.id >= record.id:
                 balance += record.amount
         return balance
@@ -49,7 +49,7 @@ class AccountBooksModelSerializer(ModelSerializer):
         return total_balance
 
     def get_accountbook_record(self, obj):
-        accountbook_records = obj.account_book_record.all().filter(is_delete=False)
+        accountbook_records = obj.account_book_record.all().filter(is_deleted=False)
         accountbook_records_serializer = AccountBooksRecordModelSerializer(accountbook_records, many=True)
         return accountbook_records_serializer.data
 
