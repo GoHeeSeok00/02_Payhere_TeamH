@@ -2,6 +2,8 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from config.permissions import IsOwner
+
 from .models import AccountBook
 from .serializers import AccountBookRecordCreateSerializer, AccountBooksModelSerializer
 
@@ -46,7 +48,24 @@ class AccountBooksDetailAPIView(APIView):
     PUT : 가계부 수정, 삭제
     """
 
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsOwner]
+
+    def get_object_and_check_permission(self, obj_id):
+        """
+        Assignee : 희석
+
+        object를 가져올 때 object 유무에 따른 예외처리
+        DoesNotExist 에러 발생 시 None 리턴
+
+        permission_classes에 명시된 퍼미션에 따라 권한 체크
+        """
+        try:
+            object = AccountBook.objects.get(id=obj_id, is_delete=False)
+        except AccountBook.DoesNotExist:
+            return
+
+        self.check_object_permissions(self.request, object)
+        return object
 
     def get(self, request, obj_id):
         return
