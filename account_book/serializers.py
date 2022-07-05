@@ -35,14 +35,16 @@ class AccountBooksModelSerializer(ModelSerializer):
 
     AccountBookRecord 모델 쿼리셋에서 for문을 이용해
     현재까지의 잔액을 계산하는 로직 구성
+
+    내부에 정의된 create 메소드 override로 로그인된 user로 AccountBook 모델 생성
     """
 
-    가계부_고유번호 = serializers.IntegerField(source="id")
-    total_balance = serializers.SerializerMethodField()
-    accountbook_record = serializers.SerializerMethodField()
+    가계부_고유번호 = serializers.IntegerField(source="id", required=False, read_only=True)
+    total_balance = serializers.SerializerMethodField(required=False, read_only=True)
+    accountbook_record = serializers.SerializerMethodField(required=False, read_only=True)
 
     def get_total_balance(self, obj):
-        accountbookrecords = obj.account_book_record.all()
+        accountbookrecords = obj.account_book_record.all().filter(is_deleted=False)
         total_balance = obj.balance
         for record in accountbookrecords:
             total_balance += record.amount
@@ -53,19 +55,13 @@ class AccountBooksModelSerializer(ModelSerializer):
         accountbook_records_serializer = AccountBooksRecordModelSerializer(accountbook_records, many=True)
         return accountbook_records_serializer.data
 
+    def create(self, validated_data):
+        user = self.context["user"]
+        accountbook = AccountBook(user=user, **validated_data)
+        accountbook.save()
+        return accountbook
+
     class Meta:
         model = AccountBook
-        fields = ("user", "title", "가계부_고유번호", "total_balance", "accountbook_record")
-
-
-class AccountBookRecordCreateSerializer(ModelSerializer):
-    """
-    Assignee : 상백
-
-    POST 요청 시, AccountBookRecord 모델 객체 데이터를 생성
-    요청 시 필요한 필드값 설정
-    """
-
-    class Meta:
-        model = AccountBookRecord
-        fields = ("amount", "memo", "account_book")
+        fields = ("user", "title", "balance", "가계부_고유번호", "total_balance", "accountbook_record")
+        read_only_fields = ["user"]
