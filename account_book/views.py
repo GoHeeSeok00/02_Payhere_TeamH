@@ -34,6 +34,7 @@ class AccountBooksAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# url : GET, PUT api/v1/accountbooks/<obj_id>/
 class AccountBooksDetailAPIView(APIView):
     """
     Assignee : 희석
