@@ -32,3 +32,20 @@ class AccountBooksAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AccountBooksDetailAPIView(APIView):
+    """
+    Assignee : 희석
+    Http method = GET, PUT
+
+    permission = 본인만 조회, 수정
+
+    GET : 가계부 단일조회
+    PUT : 가계부 수정, 삭제
+    """
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, obj_id):
+        return
