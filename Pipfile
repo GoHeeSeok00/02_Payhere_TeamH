@@ -13,7 +13,10 @@ black = "*"
 flake8 = "*"
 isort = "*"
 tzdata = "*"
+
 pytest-django = "*"
+djangorestframework-simplejwt = "*"
+
 
 [dev-packages]
 
