@@ -63,5 +63,8 @@ class AccountBooksModelSerializer(ModelSerializer):
 
     class Meta:
         model = AccountBook
-        fields = ("user", "title", "balance", "가계부_고유번호", "total_balance", "accountbook_record")
+        fields = ("user", "title", "balance", "가계부_고유번호", "total_balance", "accountbook_record", "is_deleted")
+        extra_kwargs = {
+            "is_deleted": {"write_only": True},
+        }
         read_only_fields = ["user"]
