@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -5,7 +6,7 @@ from rest_framework.views import APIView
 from config.permissions import IsOwner
 
 from .models import AccountBook
-from .serializers import AccountBooksModelSerializer
+from .serializers import AccountBooksModelSerializer, AccountBooksRecordModelSerializer
 
 
 # url : GET, POST api/v1/accountbooks/
@@ -14,23 +15,68 @@ class AccountBooksAPIView(APIView):
     Assignee : 상백
     Http method = GET, POST
 
-    GET : 클라이언트의 요청으로 이제까지 기록한 가계부 리스트 정보를 response 하는 API
+    permission = 본인만 조회, 수정
 
-    POST : 클라이언트의 요청 및 JSON 형태 데이터 입력 시, 가계부 데이터를 생성
-    ex) {"title": "서가앤쿡 목동점","balance": "100000"}
+    GET : 가계부 목록 조회
+    POST : 가계부 생성
     """
 
     permission_classes = [IsOwner]
 
     def get(self, request):
+        """
+        Assignee : 상백
+
+        클라이언트의 요청으로 지금까지 기록된 가계부 리스트 정보를 response 하는 메서드입니다.
+        로그인된 유저가 생성한 가계부 리스트에서 삭제가 되지 않은 가계부를 의미합니다.
+        """
         # 쿼리 파라미터가 들어왔을 때, 삭제된 내역만 볼 수 있게끔 구현해야 함
         accountbooks = AccountBook.objects.all().filter(user=request.user, is_deleted=False)
         serializer = AccountBooksModelSerializer(accountbooks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
+        """
+        Assignee : 상백
+
+        클라이언트의 요청 및 JSON 형태 데이터 입력 시, 가계부 데이터를 생성하는 메서드입니다.
+        context 딕셔너리로 로그인된 유저 객체를 보내주어 클라이언트가 유저 id를 입력하지 않게 설정했습니다.
+        ex) {"title": "서가앤쿡 목동점","balance": "100000"}
+        """
         context = {"user": request.user}
         serializer = AccountBooksModelSerializer(data=request.data, context=context)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# url : POST api/v1/accountbooks/<obj_id>/records/
+class AccountBooksRecordAPIView(APIView):
+    """
+    Assignee : 상백
+    Http method = POST
+
+    permission = 본인만 조회, 수정
+
+    POST : 가계부 기록 생성
+    """
+
+    permission_classes = [IsOwner]
+
+    def post(self, request, obj_id):
+        """
+        Assignee : 상백
+
+        obj_id : int
+
+        클라이언트의 요청 및 가계부 고유번호 입력 시, 해당 가계부에 속한 금액과 메모 기록을 생성하는 메서드입니다.
+        context 딕셔너리로 AccountBook 객체를 보내주어 클라이언트가 가계부 id를 입력하지 않게 설정했습니다.
+        ex) {"amount": "30000","memo": "현금매출"}
+        """
+        account_book = get_object_or_404(AccountBook, id=obj_id, is_deleted=False)
+        context = {"account_book": account_book}
+        serializer = AccountBooksRecordModelSerializer(data=request.data, context=context)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
