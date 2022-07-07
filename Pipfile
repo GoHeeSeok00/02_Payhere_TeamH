@@ -13,6 +13,7 @@ black = "*"
 flake8 = "*"
 isort = "*"
 tzdata = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
