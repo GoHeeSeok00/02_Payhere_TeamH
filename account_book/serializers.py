@@ -31,7 +31,10 @@ class AccountBooksRecordModelSerializer(ModelSerializer):
 
     class Meta:
         model = AccountBookRecord
-        fields = ("amount", "memo", "balance", "created_at")
+        fields = ("amount", "memo", "balance", "created_at", "is_deleted")
+        extra_kwargs = {
+            "is_deleted": {"write_only": True},
+        }
 
 
 class AccountBooksModelSerializer(ModelSerializer):
