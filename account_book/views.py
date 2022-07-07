@@ -25,14 +25,21 @@ class AccountBooksAPIView(APIView):
 
     def get(self, request):
         """
-        Assignee : 상백
+        Assignee : 상백, 희석
 
         클라이언트의 요청으로 지금까지 기록된 가계부 리스트 정보를 response 하는 메서드입니다.
         로그인된 유저가 생성한 가계부 리스트에서 삭제가 되지 않은 가계부를 의미합니다.
+
+        쿼리 파라미터로 "search" 키의 값이 "delete"가 들어오는 경우 삭제된 데이터를 보여줍니다.
         """
-        # 쿼리 파라미터가 들어왔을 때, 삭제된 내역만 볼 수 있게끔 구현해야 함
-        accountbooks = AccountBook.objects.all().filter(user=request.user, is_deleted=False)
-        serializer = AccountBooksModelSerializer(accountbooks, many=True)
+
+        search = request.GET.get("search", None)
+        if search == "delete":
+            account_books = AccountBook.objects.all().filter(user=request.user, is_deleted=True)
+
+        else:
+            account_books = AccountBook.objects.all().filter(user=request.user, is_deleted=False)
+        serializer = AccountBooksModelSerializer(account_books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
