@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from config.permissions import IsOwner
 
-from .models import AccountBook
+from .models import AccountBook, AccountBookRecord
 from .serializers import AccountBooksModelSerializer, AccountBooksRecordModelSerializer
 
 
@@ -51,18 +51,52 @@ class AccountBooksAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# url : POST api/v1/accountbooks/<obj_id>/records/
+# url : POST api/v1/accountbooks/<obj_id>/records/ GET,PUT /api/v1/accountbooks/records/<obj_id>
 class AccountBooksRecordAPIView(APIView):
     """
-    Assignee : 상백
-    Http method = POST
+    Assignee : 상백, 희석
+    Http method = POST, GET, PUT
 
     permission = 본인만 조회, 수정
 
+    GET : 가계부 단건 상세 조회
     POST : 가계부 기록 생성
+    PUT :
     """
 
     permission_classes = [IsOwner]
+
+    def get_object_and_check_permission(self, obj_id):
+        """
+        Assignee : 상백
+
+        obj_id : int
+
+        input 인자로 AccountBookRecord 객체를 가져와 퍼미션 검사를 하는 메서드입니다.
+        DoesNotExist 에러 발생 시 None을 리턴합니다.
+        APIView 클래스에 정의된 check_object_permissions 메서드를 override해서 검사를 진행합니다.
+        """
+        try:
+            object = AccountBookRecord.objects.get(id=obj_id)
+        except AccountBookRecord.DoesNotExist:
+            return
+
+        self.check_object_permissions(self.request, object)
+        return object
+
+    def get(self, request, obj_id):
+        """
+        Assignee : 상백
+
+        obj_id : int
+
+        클라이언트의 요청 및 가계부 기록 고유번호 입력 시, 특정 기록에 대한 내용을 응답하는 메서드입니다.
+        설정한 permission_classes로 인해 특정 기록의 작성자가 아닐 경우, 접근이 제한됩니다.
+        """
+        account_book_record = self.get_object_and_check_permission(obj_id)
+        if not account_book_record:
+            return Response({"error": "해당 가계부 기록이 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+        return Response(AccountBooksRecordModelSerializer(account_book_record).data, status=status.HTTP_200_OK)
 
     def post(self, request, obj_id):
         """
