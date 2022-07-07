@@ -1,9 +1,29 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from user.models import User
 
 
-class UserSignupSerializer(serializers.ModelSerializer):
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """
+    Assignee : 정석
+
+    TOKEN 시리얼라이저
+    """
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        return token
+
+
+class UserSignUpSerializer(serializers.ModelSerializer):
+    """
+    Assignee : 정석
+
+    회원가입 시리얼라이저
+    """
+
     class Meta:
         model = User
         fields = "__all__"
