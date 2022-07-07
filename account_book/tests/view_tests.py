@@ -40,6 +40,13 @@ class ViewTestCase(TestCase):
 
         self.assertEqual(found.func.__name__, AccountBooksAPIView.as_view().__name__)
 
+    def test_url_resolves_to_account_books_api_view_get_method(self):
+        """AccountBooksAPIViewdml get method Test"""
+
+        found = resolve("/api/v1/accountbooks/")
+
+        self.assertEqual(found.func.__name__, AccountBooksAPIView.as_view().__name__)
+
     def test_url_resolves_to_account_books_detail_api_view(self):
         """accountbooks_detail url과 view가 잘 매치되었는지 Test"""
 
