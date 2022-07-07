@@ -9,7 +9,7 @@ from .models import AccountBook, AccountBookRecord
 from .serializers import AccountBooksModelSerializer, AccountBooksRecordModelSerializer
 
 
-# url : GET, POST api/v1/accountbooks/
+# url : GET, POST api/v1/accountbooks
 class AccountBooksAPIView(APIView):
     """
     Assignee : 상백
@@ -25,14 +25,21 @@ class AccountBooksAPIView(APIView):
 
     def get(self, request):
         """
-        Assignee : 상백
+        Assignee : 상백, 희석
 
         클라이언트의 요청으로 지금까지 기록된 가계부 리스트 정보를 response 하는 메서드입니다.
         로그인된 유저가 생성한 가계부 리스트에서 삭제가 되지 않은 가계부를 의미합니다.
+
+        쿼리 파라미터로 "status" 키의 값이 "delete"가 들어오는 경우 삭제된 데이터를 보여줍니다.
         """
-        # 쿼리 파라미터가 들어왔을 때, 삭제된 내역만 볼 수 있게끔 구현해야 함
-        accountbooks = AccountBook.objects.all().filter(user=request.user, is_deleted=False)
-        serializer = AccountBooksModelSerializer(accountbooks, many=True)
+
+        status = request.GET.get("status", None)
+        if status == "delete":
+            account_books = AccountBook.objects.all().filter(user=request.user, is_deleted=True)
+
+        else:
+            account_books = AccountBook.objects.all().filter(user=request.user, is_deleted=False)
+        serializer = AccountBooksModelSerializer(account_books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -51,17 +58,19 @@ class AccountBooksAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# url : POST api/v1/accountbooks/<obj_id>/records/ GET,PUT /api/v1/accountbooks/records/<obj_id>
+# url : POST api/v1/accountbooks/<obj_id>/records | GET,PUT /api/v1/accountbooks/records/<obj_id>
 class AccountBooksRecordAPIView(APIView):
     """
     Assignee : 상백, 희석
+
     Http method = POST, GET, PUT
 
     permission = 본인만 조회, 수정
 
     GET : 가계부 단건 상세 조회
     POST : 가계부 기록 생성
-    PUT :
+    PUT : 가계부 기록 수정
+
     """
 
     permission_classes = [IsOwner]
@@ -116,8 +125,35 @@ class AccountBooksRecordAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def put(self, request, obj_id):
+        """
+        Assignee : 희석
 
-# url : GET, PUT api/v1/accountbooks/<obj_id>/
+        obj_id : int
+
+        가계부 기록의 단일 객체 수정을 위한 메서드입니다.
+        객체 삭제의 경우 is_deleted 필드의 값을 False에서 True로 변경하는 로직으로 구성됩니다.
+        """
+        record = self.get_object_and_check_permission(obj_id)
+        if not record:
+            return Response({"error": "기록이 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = AccountBooksRecordModelSerializer(record, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        try:
+            if request.data["is_deleted"] == True:
+                return Response({"message": "기록 삭제 성공!!"}, status=status.HTTP_200_OK)
+            elif request.data["is_deleted"] == False:
+                return Response({"message": "기록 복구 성공!!"}, status=status.HTTP_200_OK)
+        except KeyError:
+            pass
+
+        return Response({"message": "기록 수정 성공!!"}, status=status.HTTP_200_OK)
+
+
+# url : GET, PUT api/v1/accountbooks/<obj_id>
 class AccountBooksDetailAPIView(APIView):
     """
     Assignee : 희석
