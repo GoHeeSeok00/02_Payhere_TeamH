@@ -14,6 +14,7 @@ flake8 = "*"
 isort = "*"
 tzdata = "*"
 djangorestframework-simplejwt = "*"
+drf-yasg = "*"
 
 [dev-packages]
 
