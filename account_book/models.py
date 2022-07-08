@@ -35,6 +35,7 @@ class AccountBookRecord(BaseTimeStampModel):
     account_book = models.ForeignKey(
         to=AccountBook, verbose_name="가계부", on_delete=models.CASCADE, related_name="account_book_record"
     )
+    date = models.DateField("날짜")
     amount = models.IntegerField("금액")
     memo = models.CharField("메모", max_length=100)
     is_deleted = models.BooleanField("삭제 여부", default=False)
