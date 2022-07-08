@@ -13,8 +13,6 @@ class SignUpView(APIView):
     Assignee : 정석
 
     회원가입
-
-    회원가입시 즉시 토큰 발급
     """
 
     permission_classes = [AllowAny]
@@ -24,22 +22,12 @@ class SignUpView(APIView):
         serializer = UserSignUpSerializer(data=request.data)
 
         if serializer.is_valid():
-            user = serializer.save()
-
-            token = MyTokenObtainPairSerializer.get_token(user)
-            refresh_token = str(token)
-            access_token = str(token.access_token)
-
+            serializer.save()
             res = Response(
                 {
                     "message": "회원가입에 성공했습니다.",
-                    "user": serializer.data,
-                    "token": {
-                        "access": access_token,
-                        "refresh": refresh_token,
-                    },
                 },
-                status=status.HTTP_200_OK,
+                status=status.HTTP_201_CREATED,
             )
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -70,7 +58,7 @@ class SignInView(APIView):
 
         res = Response(
             {
-                "message": "로그인 되었습니다.",
+                "message": f"{user.username}님 반갑습니다!",
                 "token": {
                     "access": access_token,
                     "refresh": refresh_token,

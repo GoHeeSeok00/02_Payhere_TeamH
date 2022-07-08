@@ -34,9 +34,6 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
-    #     "DEFAULT_PERMISSION_CLASSES": (
-    #         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
-    #     ),  # login작업이외에 다른 views에서 토큰을 사용할 때 필요합니다.
 }
 
 SIMPLE_JWT = {
