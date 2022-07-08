@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -18,6 +19,7 @@ class SignUpView(APIView):
 
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(request_body=UserSignUpSerializer)
     def post(self, request):
         serializer = UserSignUpSerializer(data=request.data)
 
@@ -54,6 +56,7 @@ class SignInView(APIView):
 
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(request_body=UserSignUpSerializer)
     def post(self, request):
         email = request.data.get("email", None)
         password = request.data.get("password", None)

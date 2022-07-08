@@ -30,29 +30,26 @@ class AccountBooksAPIViewTestCase(APITestCase):
             account_book_id=self.account_book_02.id, amount=-30000, memo="매장 자재구매비", is_deleted=1
         )
 
-        self.email = "hoonhee@gmail.com"
-        self.password = "you_know_nothing"
-        self.user = User.objects.create_user(self.email, self.password)
+        # self.email = "hoonhee@gmail.com"
+        # self.password = "you_know_nothing"
+        # self.user = User.objects.create_user(self.email, self.password)
 
+    def test_get_access_token(self):
+        response = self.client.post(self.login_url, {"email": self.email, "password": self.password})
+        self.assertEqual(200, response.status_code)
+        self.assertTrue("token" in json.loads(response.content))
+        # self.assertTrue("access" in json.loads(response.content))
 
-def test_get_access_token(self):
-    response = self.client.post(self.login_url, {"email": self.email, "password": self.password})
-    self.assertEqual(200, response.status_code)
-    self.assertTrue("token" in json.loads(response.content))
-    # self.assertTrue("access" in json.loads(response.content))
+        access_token = response.json()["token"]["access"]
+        return access_token
 
-    access_token = response.json()["token"]["access"]
-    return access_token
+    def test_account_books_api_view_post(self):
+        header = {"HTTP_Authorization": self.test_get_access_token()}
+        account_book_data = {"title": "이디야커피 여의도점", "balance": "1000000"}
+        response = self.client.post(self.url, account_book_data, content_type="application/json", **header)
+        self.assertEqual(response.status_code, 201)
 
-
-def test_account_books_api_view_post(self):
-    header = {"HTTP_Authorization": self.test_get_access_token()}
-    account_book_data = {"title": "이디야커피 여의도점", "balance": "1000000"}
-    response = self.client.post(self.url, account_book_data, content_type="application/json", **header)
-    self.assertEqual(response.status_code, 201)
-
-
-def test_account_books_api_view_get(self):
-    header = {"HTTP_Authorization": self.test_get_access_token()}
-    response = self.client.get(self.url, content_type="application/json", **header)
-    self.assertEqual(response.status_code, 200)
+    def test_account_books_api_view_get(self):
+        header = {"HTTP_Authorization": self.test_get_access_token()}
+        response = self.client.get(self.url, content_type="application/json", **header)
+        self.assertEqual(response.status_code, 200)
