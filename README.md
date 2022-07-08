@@ -62,46 +62,77 @@
 
 <br>
 
-## API 명세서
-
-| URL| HTTP Method | 논리적 이름 | 물리적 이름 | Permission | parameter | 
-|------|----------------|-------------|-------------|-------------|----------------|
-|/api/v1/accountbooks|`GET`|가계부 목록 조회|account_book|IsOwner|?status=delete|
-|/api/v1/accountbooks|`POST`|가계부 생성|account_book|IsOwner||
-|/api/v1/accountbooks/<obj_id>|`GET`|가계부 단건 조회|account_book_detail|IsOwner||
-|/api/v1/accountbooks/<obj_id>|`PUT`|가계부 단건 수정, 삭제|account_book_detail|IsOwner||
-|/api/v1/accountbooks/<obj_id>/records|`POST`|가계부 기록 생성|record|IsOwner||
-|/api/v1/accountbooks/records/<obj_id>|`GET`|가계부 기록 단건 상세 조회|record_detail|IsOwner||
-|/api/v1/accountbooks/records/<obj_id>|`PUT`|가계부 기록 단건 수정, 삭제|record_detail|IsOwner||
-|/api/v1/users/signup|`POST`|회원가입|signup|Allowany||
-|/api/v1/users/signin|`POST`|로그인|siginin|Allowany||
+## 🌟 API 명세서
+<img width="1008" alt="스크린샷 2022-07-08 오후 7 03 34" src="https://user-images.githubusercontent.com/76423946/177969327-b359e65d-47f6-406e-b465-57b719ee6edd.png">
 
 ❗️ '/api/v1/accountbooks' api 호출시, 가계부 목록과, 각 가계부에 기록된 내역들을 함께 보여줍니다. <br>
 ❗️ '/api/v1/accountbooks' api에 <b>status=delete</b>파라미터를 추가하면 삭제된 가계부 목록을 보여줍니다.<br>
 ❗️ 가계부 목록, 가계부 단건 조회할 때, 가계부에 기록된 내역들의 금액을 합산한 값은 <b>total_balance</b>필드를 생성하여 보여줍니다. <br>
-❗️ 가계부, 가계부 기록 삭제 api의 http 메소드가 `PUT`인 이유는 <b>soft delete</b>하기 위함입니다. <br>
-&nbsp; &nbsp; &nbsp; 삭제된 내역은 언제든지 복구할 수 있어야 하기 때문에 DB에서 실제로 데이터를 삭제하는것이 아닌, 각 모델의 <b>is_deleted</b>필드를 False 에서 True로 &nbsp; &nbsp; &nbsp; &nbsp; 수정하게 됩니다. <br>
+❗️ 가계부, 가계부 기록 삭제 api의 http 메소드가 `PATCH`인 이유는 <b>soft delete</b>하기 위함입니다. <br>
+&nbsp; &nbsp; &nbsp; 삭제된 내역은 언제든지 복구할 수 있어야 하기 때문에 DB에서 실제로 데이터를 삭제하는것이 아닌, 각 모델의 <b>is_deleted</b>필드를 False 에서 True로 수정하게 됩니다. <br>
+❗️ 가계부, 가계부 기록 수정 api의 메소드는 `PUT`이지만 코드상 <b>partial</b> 옵션을 주어 부분적 수정도 가능합니다.<br>
 ❗️ 가계부, 가계부 기록은 is_deleted 필드가 False인 것만(삭제되지 않은 것만)유저에게 보여줍니다. <br>
 
-➡️ [스웨거 링크]()
+
 
 <details>
 <summary>Postman 테스트 결과</summary> 
 <div markdown="1">
-이 부분은 리팩토링 후에 첨부할 예정입니다. 스웨거 작성이 잘 되어있다면, 스웨거 캡쳐본으로 대신해도 될것 같습니다.
+<ul>
+  <li>
+    <p>회원가입</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>로그인</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>가계부 생성</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>가계부 수정</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>가계부 삭제</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>가계부 복구</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    </li>
+  <li>
+    <p>가계부 기록 생성</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>가계부 기록 수정</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>가계부 기록 삭제</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+  <li>
+    <p>가계부 기록 복구</p>
+    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+  </li>
+</ul>
 </div>
 </details>
 
 <br>
 
 ## 📋 ERD
-![erd](https://user-images.githubusercontent.com/76423946/177769143-5ce7e3c0-1767-4d9f-869c-107e8f9e32d0.png)
+<img width="802" alt="erd" src="https://user-images.githubusercontent.com/76423946/177966917-96fa08b7-8849-4443-ae4f-d67421e19dc1.png">
+
 - User : 유저 정보를 저장합니다.
 - AccountBook : 가계부 정보를 저장합니다.
 - AccountBookRecord : 각 가계부에 수입, 지출 내역을 저장합니다.
 
 ❗️ User 모델은 장고의 기본 User 모델을 그대로 사용하지 않고 커스텀하였습니다. <br>
-(혹시 커스텀한 이유에 대해 멋지게 풀어내실 수 있으면 내용 추가해주시면 감사하겠습니다! 제가 잘 써보려고 했는데 어렵네요,,ㅠ)<br>
 ❗️ 한 명의 유저는 여러개의 가계부를 관리할 수 있도록 User 모델과 AccountBook(가계부)모델은 1:N 관계입니다. <br>
 ❗️ AccountBook 모델과 AccountBookRecord 모델은 1:N 관계로, 한 개의 가계부에 여러 내역을 기록할 수 있습니다. <br>
 
@@ -116,7 +147,7 @@ Docker, NginX, Gunicorn을 사용하여 EC2 서버에 배포하였습니다. <br
 <br>
 
 ## ✔️ Test Case 
-훈희님께서 내용 채워주시면 좋을것 같아요 :)
+테스트 케이스 작성 완료 후 내용 추가할 예정입니다.
 
 <br>
 
