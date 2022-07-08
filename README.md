@@ -85,39 +85,47 @@
   </li>
   <li>
     <p>로그인</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="828" alt="image" src="https://user-images.githubusercontent.com/95380638/177974085-0fdb702b-3db3-40a7-a1ef-66fa1976abe1.png">
   </li>
   <li>
     <p>가계부 생성</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="828" alt="image" src="https://user-images.githubusercontent.com/95380638/177974294-501d9934-c5f0-4fe7-8b70-3f32283fa011.png">
+  </li>
+  <li>
+    <p>가계부 조회</p>
+    <img width="876" alt="image" src="https://user-images.githubusercontent.com/95380638/177974570-beb1771c-2c75-4c2f-b176-6cf5a12a91e8.png">
   </li>
   <li>
     <p>가계부 수정</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="871" alt="image" src="https://user-images.githubusercontent.com/95380638/177974449-38854e04-8890-4d0d-9b67-dbbed903901b.png">
   </li>
   <li>
     <p>가계부 삭제</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="871" alt="image" src="https://user-images.githubusercontent.com/95380638/177974627-2cb6b140-80a6-42c8-a38d-a1f1ba1524c8.png">
   </li>
   <li>
     <p>가계부 복구</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="877" alt="image" src="https://user-images.githubusercontent.com/95380638/177974744-f4525881-9a90-49cb-811c-617cbf5621a5.png">
     </li>
   <li>
     <p>가계부 기록 생성</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="877" alt="image" src="https://user-images.githubusercontent.com/95380638/177974825-4f15f3de-c781-45aa-a79f-c3532de8efb1.png">
+  </li>
+  <li>
+    <p>가계부 기록 조회</p>
+    <img width="881" alt="image" src="https://user-images.githubusercontent.com/95380638/177974942-6ba78e84-ac37-4e5d-b18a-2f33f9c132d5.png">
   </li>
   <li>
     <p>가계부 기록 수정</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="868" alt="image" src="https://user-images.githubusercontent.com/95380638/177975005-5eed224a-63d0-46b8-adbf-fbe226e242d7.png">
   </li>
   <li>
     <p>가계부 기록 삭제</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="874" alt="image" src="https://user-images.githubusercontent.com/95380638/177975062-35706646-c89a-4081-8d4b-580de38a1702.png">
   </li>
   <li>
     <p>가계부 기록 복구</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="875" alt="image" src="https://user-images.githubusercontent.com/95380638/177975102-a0e5433d-3759-4ac8-9a15-6197b35d287b.png">
   </li>
 </ul>
 </div>
