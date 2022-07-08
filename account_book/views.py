@@ -33,8 +33,8 @@ class AccountBooksAPIView(APIView):
         쿼리 파라미터로 "status" 키의 값이 "delete"가 들어오는 경우 삭제된 데이터를 보여줍니다.
         """
 
-        status = request.GET.get("status", None)
-        if status == "delete":
+        data_status = request.GET.get("status", None)
+        if data_status == "delete":
             account_books = AccountBook.objects.all().filter(user=request.user, is_deleted=True)
 
         else:
