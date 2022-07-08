@@ -67,7 +67,7 @@
 
 ❗️ '/api/v1/accountbooks' api 호출시, 가계부 목록과, 각 가계부에 기록된 내역들을 함께 보여줍니다. <br>
 ❗️ '/api/v1/accountbooks' api에 <b>status=delete</b>파라미터를 추가하면 삭제된 가계부 목록을 보여줍니다.<br>
-❗️ '/api/v1/accountbooks' api를 POST로 요청 시, 가계부를 생성합니다.<br>
+❗️ '/api/v1/accountbooks' api를 `POST`로 요청 시, 가계부를 생성합니다.<br>
 ❗️ 가계부 목록, 가계부 단건 조회할 때, 가계부에 기록된 금액은 <b>balance</b>, 해당 일자까지의 금액을 합산한 값은 <b>total_balance</b>필드를 생성하여 보여줍니다. <br>
 ❗️ 가계부, 가계부 기록 삭제 api의 http 메소드가 `PATCH`인 이유는 <b>soft delete</b>하기 위함입니다. <br>
 &nbsp; &nbsp; &nbsp; 삭제된 내역은 언제든지 복구할 수 있어야 하기 때문에 DB에서 실제로 데이터를 삭제하는것이 아닌, 각 모델의 <b>is_deleted</b>필드를 False 에서 True로 수정하게 됩니다. <br>
