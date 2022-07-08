@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from drf_yasg import openapi
+from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -27,6 +29,16 @@ class AccountBooksAPIView(APIView):
 
     permission_classes = [IsOwner]
 
+    status = openapi.Parameter(
+        "status",
+        openapi.IN_QUERY,
+        description="delete를 입력하면 삭제된 가계부를 보여줍니다.",
+        required=False,
+        default=None,
+        type=openapi.TYPE_STRING,
+    )
+
+    @swagger_auto_schema(manual_parameters=[status], responses={200: "Success"})
     def get(self, request):
         """
         Assignee : 상백, 희석
@@ -46,6 +58,7 @@ class AccountBooksAPIView(APIView):
         serializer = AccountBooksModelSerializer(account_books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=AccountBooksModelSerializer)
     def post(self, request):
         """
         Assignee : 상백
@@ -93,6 +106,7 @@ class AccountBooksRecordAPIView(APIView):
         self.check_object_permissions(self.request, object)
         return object
 
+    @swagger_auto_schema(request_body=no_body)
     def get(self, request, accountbook_id):
         """
         Assignee : 상백, 희석
@@ -114,6 +128,7 @@ class AccountBooksRecordAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=AccountBooksRecordModelSerializer)
     def post(self, request, accountbook_id):
         """
         Assignee : 상백
@@ -166,6 +181,7 @@ class AccountBooksRecordDetailAPIView(APIView):
         self.check_object_permissions(self.request, object)
         return object
 
+    @swagger_auto_schema(request_body=no_body)
     def get(self, request, record_id):
         """
         Assignee : 상백
@@ -180,6 +196,7 @@ class AccountBooksRecordDetailAPIView(APIView):
             return Response({"error": "해당 가계부 기록이 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
         return Response(AccountBooksRecordModelSerializer(account_book_record).data, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=AccountBooksRecordModelSerializer)
     def put(self, request, record_id):
         """
         Assignee : 희석
@@ -203,6 +220,7 @@ class AccountBooksRecordDetailAPIView(APIView):
         serializer.save()
         return Response({"message": "기록 수정 성공!!"}, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=no_body)
     def patch(self, request, record_id):
         """
         Assignee : 희석
@@ -262,6 +280,7 @@ class AccountBooksRecordDetailRecoveryAPIView(APIView):
         self.check_object_permissions(self.request, object)
         return object
 
+    @swagger_auto_schema(request_body=no_body)
     def patch(self, request, record_id):
         """
         Assignee : 희석
@@ -320,6 +339,7 @@ class AccountBooksDetailAPIView(APIView):
         self.check_object_permissions(self.request, object)
         return object
 
+    @swagger_auto_schema(request_body=no_body)
     def get(self, request, accountbook_id):
         """
         Assignee : 희석
@@ -334,6 +354,7 @@ class AccountBooksDetailAPIView(APIView):
 
         return Response(AccountBooksModelSerializer(account_book).data, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=AccountBooksModelSerializer)
     def put(self, request, accountbook_id):
         """
         Assignee : 희석
@@ -358,6 +379,7 @@ class AccountBooksDetailAPIView(APIView):
         serializer.save()
         return Response({"message": "가계부 수정 성공!!"}, status=status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=no_body)
     def patch(self, request, accountbook_id):
         """
         Assignee : 희석
@@ -415,6 +437,7 @@ class AccountBooksDetailRecoveryAPIView(APIView):
         self.check_object_permissions(self.request, object)
         return object
 
+    @swagger_auto_schema(request_body=no_body)
     def patch(self, request, accountbook_id):
         """
         Assignee : 희석
