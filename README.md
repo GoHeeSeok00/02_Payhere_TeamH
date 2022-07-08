@@ -62,6 +62,11 @@
 
 <br>
 
+## :black_nib: 이슈 관리
+<img width="1419" alt="image" src="https://user-images.githubusercontent.com/95380638/177978324-bfa68bc2-1f9b-418c-9236-ab9760c364f4.png">
+
+<br>
+
 ## 🌟 API 명세서
 <img width="1008" alt="스크린샷 2022-07-08 오후 7 03 34" src="https://user-images.githubusercontent.com/76423946/177969327-b359e65d-47f6-406e-b465-57b719ee6edd.png">
 
