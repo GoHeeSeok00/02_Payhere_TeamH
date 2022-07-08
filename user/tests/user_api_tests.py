@@ -24,8 +24,7 @@ class SignUpViewTestCase(APITestCase):
         }
         response = self.client.post(self.url, user_data, format="json")
         print(response)
-        self.assertEqual(200, response.status_code)
-        self.assertTrue("token" in json.loads(response.content))
+        self.assertEqual(201, response.status_code)
 
     def test_unique_email_validation(self):
         """이메일이 한개만 있는지 테스트"""
@@ -36,7 +35,7 @@ class SignUpViewTestCase(APITestCase):
             "mobile": "12341111",
         }
         response = self.client.post(self.url, user_data_1)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(201, response.status_code)
 
         user_data_2 = {
             "username": "testuser2",
@@ -77,3 +76,4 @@ class SignInViewTestCase(APITestCase):
         response = self.client.post(self.url, {"email": self.email, "password": self.password})
         self.assertEqual(200, response.status_code)
         self.assertTrue("token" in json.loads(response.content))
+        self.assertTrue("message" in json.loads(response.content))
