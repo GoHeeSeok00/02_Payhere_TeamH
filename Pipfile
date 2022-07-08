@@ -13,8 +13,11 @@ black = "*"
 flake8 = "*"
 isort = "*"
 tzdata = "*"
+
+pytest-django = "*"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
+
 
 [dev-packages]
 
