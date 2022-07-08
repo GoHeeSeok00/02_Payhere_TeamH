@@ -32,7 +32,8 @@ class GetDeleteAccountBooksModelSerializer(ModelSerializer):
 
     class Meta:
         model = AccountBook
-        fields = ("user", "title", "accountbook_record")
+        fields = ("user", "title", "created_at", "is_deleted", "accountbook_record")
+        read_only_fields = ["user", "is_deleted"]
 
 
 class AccountBooksRecordModelSerializer(ModelSerializer):
@@ -46,7 +47,7 @@ class AccountBooksRecordModelSerializer(ModelSerializer):
     내부에 정의된 create 메소드 override로 AccountBookRecord 모델 객체 생성
     """
 
-    balance = serializers.SerializerMethodField()
+    balance = serializers.SerializerMethodField(required=False, read_only=True)
 
     def get_balance(self, obj):
         balance = obj.account_book.balance
@@ -64,9 +65,7 @@ class AccountBooksRecordModelSerializer(ModelSerializer):
     class Meta:
         model = AccountBookRecord
         fields = ("date", "amount", "memo", "balance", "created_at", "is_deleted")
-        extra_kwargs = {
-            "is_deleted": {"write_only": True},
-        }
+        read_only_fields = ["is_deleted"]
 
 
 class AccountBooksModelSerializer(ModelSerializer):
@@ -107,8 +106,5 @@ class AccountBooksModelSerializer(ModelSerializer):
 
     class Meta:
         model = AccountBook
-        fields = ("user", "title", "balance", "가계부_고유번호", "total_balance", "accountbook_record", "is_deleted")
-        extra_kwargs = {
-            "is_deleted": {"write_only": True},
-        }
-        read_only_fields = ["user"]
+        fields = ("user", "title", "balance", "가계부_고유번호", "total_balance", "is_deleted", "accountbook_record")
+        read_only_fields = ["user", "is_deleted"]
