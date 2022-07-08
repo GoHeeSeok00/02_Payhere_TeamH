@@ -7,7 +7,11 @@ from rest_framework.views import APIView
 from config.permissions import IsOwner
 
 from .models import AccountBook, AccountBookRecord
-from .serializers import AccountBooksModelSerializer, AccountBooksRecordModelSerializer
+from .serializers import (
+    AccountBooksModelSerializer,
+    AccountBooksRecordModelSerializer,
+    GetDeleteAccountBooksModelSerializer,
+)
 
 
 # url : GET, POST api/v1/accountbooks
@@ -82,14 +86,14 @@ class AccountBooksRecordAPIView(APIView):
         APIView 클래스에 정의된 check_object_permissions 메서드를 override해서 검사를 진행합니다.
         """
         try:
-            object = AccountBookRecord.objects.get(id=obj_id)
-        except AccountBookRecord.DoesNotExist:
+            object = AccountBook.objects.get(id=obj_id)
+        except AccountBook.DoesNotExist:
             return
 
         self.check_object_permissions(self.request, object)
         return object
 
-    def get(self, request):
+    def get(self, request, accountbook_id):
         """
         Assignee : 상백, 희석
 
@@ -101,12 +105,14 @@ class AccountBooksRecordAPIView(APIView):
 
         data_status = request.GET.get("status", None)
         if data_status == "delete":
-            account_books = AccountBook.objects.filter(user=request.user, is_deleted=True)
+            account_books = self.get_object_and_check_permission(accountbook_id)
 
-        else:
-            account_books = AccountBook.objects.filter(user=request.user, is_deleted=False)
-        serializer = AccountBooksModelSerializer(account_books, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            if not account_books:
+                return Response({"error": "가계부가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+            serializer = GetDeleteAccountBooksModelSerializer(account_books)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, accountbook_id):
         """
@@ -127,7 +133,7 @@ class AccountBooksRecordAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# url : GET,PUT /api/v1/accountbooks/records/<record_id>
+# url : GET,PUT,PATCH /api/v1/accountbooks/records/<record_id>
 class AccountBooksRecordDetailAPIView(APIView):
     """
     Assignee : 상백, 희석
@@ -187,7 +193,7 @@ class AccountBooksRecordDetailAPIView(APIView):
             return Response({"error": "기록이 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            if request.data["is_deleted"]:
+            if request.data["is_deleted"] is not None:
                 return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
         except KeyError:
             pass
@@ -217,7 +223,7 @@ class AccountBooksRecordDetailAPIView(APIView):
                 account_book_record.is_deleted = True
                 account_book_record.deleted_at = timezone.now()
                 account_book_record.save()
-                return Response({"message": "기록 삭제에 성공했습니다."}, status=status.HTTP_200_OK)
+                return Response({"message": "기록 삭제 성공!!."}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -225,7 +231,7 @@ class AccountBooksRecordDetailAPIView(APIView):
             return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# url : GET,PUT /api/v1/accountbooks/records/<record_id>/recovery
+# url : PATCH /api/v1/accountbooks/records/<record_id>/recovery
 class AccountBooksRecordDetailRecoveryAPIView(APIView):
     """
     Assignee : 상백, 희석
@@ -275,7 +281,7 @@ class AccountBooksRecordDetailRecoveryAPIView(APIView):
             if request.data["is_deleted"] == False:
                 account_book_record.is_deleted = False
                 account_book_record.save()
-                return Response({"message": "기록 복구에 성공했습니다."}, status=status.HTTP_200_OK)
+                return Response({"message": "기록 복구 성공!!."}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -341,7 +347,7 @@ class AccountBooksDetailAPIView(APIView):
             return Response({"error": "가계부가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            if request.data["is_deleted"]:
+            if request.data["is_deleted"] is not None:
                 return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         except KeyError:
@@ -372,7 +378,7 @@ class AccountBooksDetailAPIView(APIView):
                 account_book.is_deleted = True
                 account_book.deleted_at = timezone.now()
                 account_book.save()
-                return Response({"message": "가계부 삭제에 성공했습니다."}, status=status.HTTP_200_OK)
+                return Response({"message": "가계부 삭제 성공!!."}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -428,7 +434,7 @@ class AccountBooksDetailRecoveryAPIView(APIView):
             if request.data["is_deleted"] == False:
                 account_book.is_deleted = False
                 account_book.save()
-                return Response({"message": "가계부 복구에 성공했습니다."}, status=status.HTTP_200_OK)
+                return Response({"message": "가계부 복구 성공!!"}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "잘못된 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
