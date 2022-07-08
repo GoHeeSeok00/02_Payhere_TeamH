@@ -1,11 +1,14 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from user.serializers import MyTokenObtainPairSerializer, UserSignUpSerializer
+from config.permissions import IsOwner
+from user.serializers import MyTokenObtainPairSerializer, SignInSerializer, SignUpSerializer, UserSerializer
+
+User = get_user_model()
 
 
 class SignUpView(APIView):
@@ -16,11 +19,11 @@ class SignUpView(APIView):
     """
 
     permission_classes = [AllowAny]
+    serializer = SignUpSerializer
 
-    @swagger_auto_schema(request_body=UserSignUpSerializer)
+    @swagger_auto_schema(request_body=SignUpSerializer)
     def post(self, request):
-        serializer = UserSignUpSerializer(data=request.data)
-
+        serializer = self.serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             res = Response(
@@ -39,31 +42,73 @@ class SignInView(APIView):
 
     로그인
 
-    로그인 성공시 access token과 refresh token만 리턴
+    로그인 성공시 access token과 refresh token 리턴
     """
 
     permission_classes = [AllowAny]
+    serializer = SignInSerializer
 
-    @swagger_auto_schema(request_body=UserSignUpSerializer)
+    @swagger_auto_schema(request_body=SignInSerializer)
     def post(self, request):
-        email = request.data.get("email", None)
-        password = request.data.get("password", None)
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(
+            request,
+            email=request.data.get("email"),
+            password=request.data.get("password"),
+        )
         if not user:
             return Response({"error": "이메일 또는 비밀번호를 잘못 입력했습니다."}, status=status.HTTP_404_NOT_FOUND)
         login(request, user)
         token = MyTokenObtainPairSerializer.get_token(user)
-        refresh_token = str(token)
-        access_token = str(token.access_token)
-
         res = Response(
             {
                 "message": f"{user.username}님 반갑습니다!",
                 "token": {
-                    "access": access_token,
-                    "refresh": refresh_token,
+                    "access": str(token.access_token),
+                    "refresh": str(token),
                 },
             },
             status=status.HTTP_200_OK,
         )
         return res
+
+
+class UserView(APIView):
+    """
+    Assignee : 정석
+
+    회원정보 수정
+
+    User의 is_active값을 참조해 해당 값 변경시에 soft delete 진행
+    """
+
+    permission_classes = [IsOwner]
+
+    @swagger_auto_schema(request_body=UserSerializer)
+    def patch(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+        try:
+            if request.data["is_active"] == False:
+                return Response(
+                    {
+                        "message": "회원탈퇴가 정상적으로 진행되었습니다.",
+                    },
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+            elif request.data["is_active"] == True:
+                return Response(
+                    {
+                        "message": "회원정보가 수정되었습니다.",
+                    },
+                    status=status.HTTP_200_OK,
+                )
+        except KeyError:
+            return Response(
+                {
+                    "message": "잘못된 입력입니다.",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
