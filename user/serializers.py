@@ -1,7 +1,8 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from user.models import User
+User = get_user_model()
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -17,7 +18,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
-class UserSignUpSerializer(serializers.ModelSerializer):
+class SignUpSerializer(serializers.ModelSerializer):
     """
     Assignee : 정석
 
@@ -42,3 +43,30 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class SignInSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=100, write_only=True)
+    password = serializers.CharField(max_length=128)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    """
+    Assignee : 정석
+
+    회원정보수정 시리얼라이저
+    """
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        user = super().update(instance, validated_data)
+
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
+
+    class Meta:
+        model = User
+        fields = ("email", "password", "mobile", "is_active")
+        extra_kwargs = {"password": {"write_only": True}}

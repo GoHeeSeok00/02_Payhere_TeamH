@@ -170,7 +170,8 @@ Docker, NginX, Gunicorn을 사용하여 EC2 서버에 배포하였습니다. <br
 <br>
 
 ## ✔️ Test Case 
-테스트 케이스 작성 완료 후 내용 추가할 예정입니다.
+서비스하는 모든 API에 대한 TESTCASE 작성 및 수행
+![image](https://user-images.githubusercontent.com/89897944/177983110-f846cef3-589e-49ca-b3cf-5a314d4b8cf2.png)
 
 <br>
 
