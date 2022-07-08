@@ -12,6 +12,7 @@ class BaseTimeStamp(models.Model):
 
     created_at = models.DateTimeField("작성시간", auto_now_add=True)
     updated_at = models.DateTimeField("수정시간", auto_now=True)
+    deleted_at = models.DateTimeField("삭제시간", default=None, null=True, blank=True)
 
     class Meta:
         abstract = True
