@@ -66,7 +66,7 @@
 
 | URL| HTTP Method | 논리적 이름 | 물리적 이름 | Permission | parameter | 
 |------|----------------|-------------|-------------|-------------|----------------|
-|/api/v1/accountbooks|`GET`|가계부 목록 조회|account_book|IsOwner|?is_delete=True|
+|/api/v1/accountbooks|`GET`|가계부 목록 조회|account_book|IsOwner|?is_deleted=True|
 |/api/v1/accountbooks|`POST`|가계부 생성|account_book|IsOwner||
 |/api/v1/accountbooks/<obj_id>|`GET`|가계부 단건 조회|account_book_detail|IsOwner||
 |/api/v1/accountbooks/<obj_id>|`PUT`|가계부 단건 수정, 삭제|account_book_detail|IsOwner||
@@ -76,12 +76,12 @@
 |/api/v1/users/signup|`POST`|회원가입|signup|Allowany||
 |/api/v1/users/signin|`POST`|로그인|siginin|Allowany||
 
-❗️ '/api/v1/accountbooks' api 호출시, 가계부 목록과, 각 가계부에 기록된 내역들이 함께 보여집니다. <br>
-❗️ '/api/v1/accountbooks' api에 파라미터를 추가할 경우 어떤 결과가 나오는지 내용 추가해야할것 같습니다. <br>
+❗️ '/api/v1/accountbooks' api 호출시, 가계부 목록과, 각 가계부에 기록된 내역들을 함께 보여줍니다. <br>
+❗️ '/api/v1/accountbooks' api에 <b>is_deleted=True</b>파라미터를 추가하면 삭제된 가계부 목록을 보여줍.<br>
 ❗️ 가계부 목록, 가계부 단건 조회할 때, 가계부에 기록된 내역들의 금액을 합산한 값은 <b>total_balance</b>필드를 생성하여 보여줍니다. <br>
 ❗️ 가계부, 가계부 기록 삭제 api의 http 메소드가 `PUT`인 이유는 <b>soft delete</b>하기 위함입니다. <br>
 &nbsp; &nbsp; &nbsp; 삭제된 내역은 언제든지 복구할 수 있어야 하기 때문에 DB에서 실제로 데이터를 삭제하는것이 아닌, 각 모델의 <b>is_deleted</b>필드를 False 에서 True로 &nbsp; &nbsp; &nbsp; &nbsp; 수정하게 됩니다. <br>
-❗️ 가계부, 가계부 기록은 is_deleted 필드가 False인 것만(삭제되지 않은 것)유저에게 보여줍니다. <br>
+❗️ 가계부, 가계부 기록은 is_deleted 필드가 False인 것만(삭제되지 않은 것만)유저에게 보여줍니다. <br>
 
 ➡️ [스웨거 링크]()
 
