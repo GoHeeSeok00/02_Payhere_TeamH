@@ -67,9 +67,11 @@
 
 ❗️ '/api/v1/accountbooks' api 호출시, 가계부 목록과, 각 가계부에 기록된 내역들을 함께 보여줍니다. <br>
 ❗️ '/api/v1/accountbooks' api에 <b>status=delete</b>파라미터를 추가하면 삭제된 가계부 목록을 보여줍니다.<br>
-❗️ 가계부 목록, 가계부 단건 조회할 때, 가계부에 기록된 내역들의 금액을 합산한 값은 <b>total_balance</b>필드를 생성하여 보여줍니다. <br>
+❗️ '/api/v1/accountbooks' api를 POST로 요청 시, 가계부를 생성합니다.<br>
+❗️ 가계부 목록, 가계부 단건 조회할 때, 가계부에 기록된 금액은 <b>balance</b>, 해당 일자까지의 금액을 합산한 값은 <b>total_balance</b>필드를 생성하여 보여줍니다. <br>
 ❗️ 가계부, 가계부 기록 삭제 api의 http 메소드가 `PATCH`인 이유는 <b>soft delete</b>하기 위함입니다. <br>
 &nbsp; &nbsp; &nbsp; 삭제된 내역은 언제든지 복구할 수 있어야 하기 때문에 DB에서 실제로 데이터를 삭제하는것이 아닌, 각 모델의 <b>is_deleted</b>필드를 False 에서 True로 수정하게 됩니다. <br>
+❗️ 가계부 단건 및 가계부 기록 단건 복구 시, <b>recovery</b>를 붙여 구분합니다.<br>
 ❗️ 가계부, 가계부 기록 수정 api의 메소드는 `PUT`이지만 코드상 <b>partial</b> 옵션을 주어 부분적 수정도 가능합니다.<br>
 ❗️ 가계부, 가계부 기록은 is_deleted 필드가 False인 것만(삭제되지 않은 것만)유저에게 보여줍니다. <br>
 
@@ -86,6 +88,14 @@
   <li>
     <p>로그인</p>
     <img width="828" alt="image" src="https://user-images.githubusercontent.com/95380638/177974085-0fdb702b-3db3-40a7-a1ef-66fa1976abe1.png">
+  </li>
+  <li>
+    <p>가계부 목록 조회</p>
+    <img width="888" alt="image" src="https://user-images.githubusercontent.com/95380638/177975927-e4fe4030-36ae-4676-bda5-331b92d05b0f.png">
+  </li>
+  <li>
+    <p>삭제된 가계부 목록 조회</p>
+    <img width="897" alt="image" src="https://user-images.githubusercontent.com/95380638/177976069-3324a7f8-a56b-4390-af1c-345fea52ab1d.png">
   </li>
   <li>
     <p>가계부 생성</p>
