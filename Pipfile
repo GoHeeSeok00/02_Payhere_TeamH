@@ -13,11 +13,10 @@ black = "*"
 flake8 = "*"
 isort = "*"
 tzdata = "*"
-
 pytest-django = "*"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
-
+django-cors-headers = "*"
 
 [dev-packages]
 
