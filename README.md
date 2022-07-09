@@ -83,18 +83,27 @@ branch와 commit 생성시 Jira에 생성된 이슈번호를 기입하고 연동
 ❗️ 가계부, 가계부 기록은 is_deleted 필드가 False인 것만(삭제되지 않은 것만)유저에게 보여줍니다. <br>
 
 
-
+<br>
+<br>
 <details>
-<summary>Postman 테스트 결과</summary> 
+<summary>🚀 API 호출 테스트 결과</summary>
 <div markdown="1">
 <ul>
   <li>
     <p>회원가입</p>
-    <img width="828" alt="스크린샷 2022-07-08 오후 7 07 46" src="https://user-images.githubusercontent.com/76423946/177971406-9225e64c-bf9a-4e66-a72e-95edad7cc086.png">
+    <img width="798" alt="스크린샷 2022-07-09 오후 11 51 42" src="https://user-images.githubusercontent.com/83942213/178110954-157208b0-f350-4915-a029-c37c54099d9e.png">
   </li>
   <li>
     <p>로그인</p>
-    <img width="828" alt="image" src="https://user-images.githubusercontent.com/95380638/177974085-0fdb702b-3db3-40a7-a1ef-66fa1976abe1.png">
+    <img width="790" alt="스크린샷 2022-07-09 오후 11 53 38" src="https://user-images.githubusercontent.com/83942213/178110998-47e3db4b-3826-4185-9e46-f0a11e64e34d.png">
+  </li>
+  <li>
+    <p>회원정보 수정</p>
+    <img width="792" alt="스크린샷 2022-07-09 오후 11 57 20" src="https://user-images.githubusercontent.com/83942213/178111116-b048464f-7d5d-43f3-8cde-27c0b58b3f8c.png">
+  </li>
+  <li>
+    <p>회원 탈퇴(soft delete)</p>
+    <img width="793" alt="스크린샷 2022-07-09 오후 11 59 06" src="https://user-images.githubusercontent.com/83942213/178111164-131cdbd2-cdef-41b9-8d58-e435cfd098ad.png">
   </li>
   <li>
     <p>가계부 목록 조회</p>
