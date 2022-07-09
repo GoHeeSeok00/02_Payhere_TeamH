@@ -64,6 +64,8 @@
 
 ## :black_nib: 이슈 관리
 <img width="1419" alt="image" src="https://user-images.githubusercontent.com/95380638/177978324-bfa68bc2-1f9b-418c-9236-ab9760c364f4.png">
+Jira를 사용하여 전체적인 작업상황을 한눈에 볼 수 있게 관리했으며,<br>
+branch와 commit 생성시 Jira에 생성된 이슈번호를 기입하고 연동하였습니다.
 
 <br>
 
