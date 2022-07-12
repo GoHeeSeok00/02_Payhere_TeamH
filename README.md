@@ -69,6 +69,21 @@ branch와 commit 생성시 Jira에 생성된 이슈번호를 기입하고 연동
 
 <br>
 
+## ✨🍰✨ 코드 컨벤션
+<img width="655" alt="pre-commit 완료" src="https://user-images.githubusercontent.com/83942213/178410269-6ab7bfa9-89a0-4a0c-ba9f-038f1e13de1f.png">
+
+Formatter
+- isort
+- black
+
+Lint
+- flake8
+
+로컬에선 pre-commit 라이브러리 사용으로 커밋 전 세가지 라이브러리를 한번에 실행하고 통과되지않을시 커밋이 불가능합니다.
+레포지토리에는 github action으로 다시 한번 체크 후, 통과되지 않으면 merge가 block됩니다.
+
+<br>
+
 ## 🌟 API 명세서
 
 <img width="1008" alt="image" src="https://user-images.githubusercontent.com/95380638/178380770-64ffcf20-a0da-484c-b05a-49ece67a68d2.png">
