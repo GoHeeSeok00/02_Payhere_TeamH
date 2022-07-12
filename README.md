@@ -70,7 +70,8 @@ branch와 commit 생성시 Jira에 생성된 이슈번호를 기입하고 연동
 <br>
 
 ## 🌟 API 명세서
-<img width="1008" alt="스크린샷 2022-07-08 오후 7 03 34" src="https://user-images.githubusercontent.com/76423946/177969327-b359e65d-47f6-406e-b465-57b719ee6edd.png">
+
+<img width="1008" alt="image" src="https://user-images.githubusercontent.com/95380638/178380770-64ffcf20-a0da-484c-b05a-49ece67a68d2.png">
 
 ❗️ '/api/v1/accountbooks' api 호출시, 가계부 목록과, 각 가계부에 기록된 내역들을 함께 보여줍니다. <br>
 ❗️ '/api/v1/accountbooks' api에 <b>status=delete</b>파라미터를 추가하면 삭제된 가계부 목록을 보여줍니다.<br>
